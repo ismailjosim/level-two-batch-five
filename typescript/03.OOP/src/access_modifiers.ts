@@ -4,10 +4,10 @@
 		constructor(
 			public name: string,
 			protected id: number,
-			private balance: number,
+			private _balance: number,
 		) {}
 		showBalance() {
-			console.log(`Your Current Balance is: ${this.balance}`)
+			console.log(`Your Current Balance is: ${this._balance}`)
 		}
 	}
 	class StudentAccount extends BankAccount {
