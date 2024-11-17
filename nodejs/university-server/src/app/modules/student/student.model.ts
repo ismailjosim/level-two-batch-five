@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 import { Student } from './student.interface';
 
 // step 02: create schema
@@ -30,3 +30,6 @@ const studentSchema = new Schema<Student>({
   profileImage: { type: String, required: true },
   isActive: { type: String, required: true },
 });
+
+// step 03: create model
+export const StudentModel = model<Student>('Student', studentSchema);
