@@ -1,10 +1,13 @@
-// student interface
+// student interface => schema => Model => DB Query
 
-interface IStudent {
+import { model, Schema } from 'mongoose';
+
+// step 01: create interface
+export interface Student {
   _id: string;
   name: {
     firstName: string;
-    middleName: string;
+    middleName?: string;
     lastName: string;
   };
   dateOfBirth: string;
@@ -22,4 +25,29 @@ interface IStudent {
     contact: string;
     occupation: string;
   };
+  profileImage?: string;
+  isActive: 'active' | 'inActive';
 }
+
+// step 03: create model
+// const studentModel = model<Student>('Student', studentSchema);
+
+// step 04: create query
+// const student = new studentModel({
+//   name: { firstName: 'John', lastName: 'Doe' },
+//   dateOfBirth: '1995-02-15',
+//   gender: 'male',
+//   age: 25,
+//   major: 'Computer Science',
+//   gpa: 3.7,
+//   contact: '1234567890',
+//   bloodGroup: 'A+',
+//   presentAddress: '123 Main St',
+//   permanentAddress: '456 Elm St',
+//   guardian: {
+//     fatherName: 'Jane Doe',
+//     motherName: 'Mary Doe',
+//     contact: '9876543210',
+//     occupation: 'Engineer',
+//   },
+// });
