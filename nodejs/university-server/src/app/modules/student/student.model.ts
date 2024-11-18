@@ -3,7 +3,6 @@ import { Student } from './student.interface';
 
 // step 02: create schema
 const studentSchema = new Schema<Student>({
-  _id: { type: String },
   name: {
     firstName: { type: String, required: true },
     middleName: { type: String },
