@@ -6,6 +6,7 @@ export interface Student {
     middleName?: string;
     lastName: string;
   };
+  email: string;
   dateOfBirth: string;
   gender: 'male' | 'female' | 'others';
   age: number;
