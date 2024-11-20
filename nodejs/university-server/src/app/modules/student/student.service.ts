@@ -1,4 +1,3 @@
-import { isValidObjectId } from 'mongoose';
 import { Student } from './student.interface';
 import { StudentModel } from './student.model';
 
