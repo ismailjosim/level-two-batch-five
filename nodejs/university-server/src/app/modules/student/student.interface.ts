@@ -7,7 +7,7 @@ export interface Student {
     lastName: string;
   };
   dateOfBirth: string;
-  gender: 'male' | 'female';
+  gender: 'male' | 'female' | 'others';
   age: number;
   major: string;
   gpa: number;
@@ -22,5 +22,5 @@ export interface Student {
     occupation: string;
   };
   profileImage?: string;
-  isActive: 'active' | 'inActive';
+  isActive: 'active' | 'blocked';
 }

@@ -2,27 +2,16 @@ import globals from 'globals';
 import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
+/** @type {import('eslint').Linter.Config[]} */
 export default [
+  { files: ['**/*.{js,mjs,cjs,ts}'] },
+  { languageOptions: { globals: globals.node } },
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
   {
-    files: ['**/*.{js,mjs,cjs,ts}'], // Define file patterns
-    languageOptions: {
-      globals: globals.browser, // Specify browser globals
-    },
-    ignores: [
-      'node_modules/**',
-      'dist/**', // Ignore common directories
-    ],
+    ignores: ['node_modules', 'dist'],
     rules: {
-      'no-unused-vars': 'error', // Example rule
-      'no-unused-expressions': 'error',
-      'prefer-const': 'error',
-      'no-console': 'warn',
-      'no-undef': 'error',
-    },
-    globals: {
-      process: 'readonly',
+      'no-unused-vars': 'error',
     },
   },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended, // Spread array from TypeScript ESLint configs
 ];
