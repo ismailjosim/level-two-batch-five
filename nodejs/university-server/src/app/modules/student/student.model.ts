@@ -1,5 +1,6 @@
 import { model, Schema } from 'mongoose';
 import { Student } from './student.interface';
+import validator from 'validator';
 
 // step 02: create schema
 const studentSchema = new Schema<Student>({
@@ -21,6 +22,20 @@ const studentSchema = new Schema<Student>({
       type: String,
       required: [true, 'Last name is required.'],
       trim: true,
+      validate: {
+        validator: (value: string) => validator.isAlpha(value),
+        message: '{VALUE} is not valid.',
+      },
+    },
+  },
+  email: {
+    type: String,
+    required: [true, 'Major is required.'],
+    trim: true,
+    unique: true,
+    validate: {
+      validator: (value: string) => validator.isEmail(value),
+      message: '{VALUE} is not valid email address.',
     },
   },
   dateOfBirth: {
