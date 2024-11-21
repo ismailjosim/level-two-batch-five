@@ -1,6 +1,5 @@
 // step 01: create interface
 export interface Student {
-  _id: string;
   name: {
     firstName: string;
     middleName?: string;
