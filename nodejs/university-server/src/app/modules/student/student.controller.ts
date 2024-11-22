@@ -28,12 +28,20 @@ const createStudent = async (req: Request, res: Response) => {
       message: 'Student created successfully',
       data: result,
     });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: 'There was an error creating the student',
-      error,
-    });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).json({
+        success: false,
+        message: error.message || 'There was an error creating the student',
+        error,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: 'An unexpected error occurred',
+        error,
+      });
+    }
   }
 };
 
