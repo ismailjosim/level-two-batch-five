@@ -1,5 +1,7 @@
+import { Model } from 'mongoose';
+
 // step 01: create interface
-export interface Student {
+export interface TStudent {
   name: {
     firstName: string;
     middleName?: string;
@@ -24,3 +26,15 @@ export interface Student {
   profileImage?: string;
   isActive: 'active' | 'blocked';
 }
+
+// custom instance methods
+export interface StudentMethod {
+  // add custom methods here
+  isUserExists(email: string): Promise<TStudent | null>;
+}
+
+export type StudentModel = Model<
+  TStudent,
+  Record<string, never>,
+  StudentMethod
+>;
