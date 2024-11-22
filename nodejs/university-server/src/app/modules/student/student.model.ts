@@ -1,9 +1,9 @@
 import { model, Schema } from 'mongoose';
-import { TStudent, StudentMethod, StudentModel } from './student.interface';
+import { StudentModel, TStudent } from './student.interface';
 import validator from 'validator';
 
 // step 02: create schema
-const studentSchema = new Schema<TStudent, StudentModel, StudentMethod>({
+const studentSchema = new Schema<TStudent, StudentModel>({
   name: {
     firstName: {
       type: String,
@@ -118,7 +118,16 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethod>({
   },
 });
 
-studentSchema.methods.isUserExists = async function (
+//* custom instance methods
+// studentSchema.methods.isUserExists = async function (
+//   email: string,
+// ): Promise<TStudent | null> {
+//   const existUser = await Student.findOne({ email });
+//   return existUser;
+// };
+
+// * create a custom static method
+studentSchema.statics.isUserExists = async function (
   email: string,
 ): Promise<TStudent | null> {
   const existUser = await Student.findOne({ email });

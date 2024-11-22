@@ -27,14 +27,13 @@ export interface TStudent {
   isActive: 'active' | 'blocked';
 }
 
-// custom instance methods
-export interface StudentMethod {
-  // add custom methods here
-  isUserExists(email: string): Promise<TStudent | null>;
+//* Create static
+export interface StudentModel extends Model<TStudent> {
+  isUserExists(): Promise<TStudent | null>;
 }
 
-export type StudentModel = Model<
-  TStudent,
-  Record<string, never>,
-  StudentMethod
->;
+// custom instance methods
+// export interface StudentMethod {
+//   isUserExists(email: string): Promise<TStudent | null>;
+// }
+// export type StudentModel = Model<TStudent, Record<string, never>>;
