@@ -8,6 +8,7 @@ export interface TStudent {
     lastName: string;
   };
   email: string;
+  password: string;
   dateOfBirth: string;
   gender: 'male' | 'female' | 'others';
   age: number;
@@ -25,6 +26,7 @@ export interface TStudent {
   };
   profileImage?: string;
   isActive: 'active' | 'blocked';
+  isDeleted?: true | false;
 }
 
 //* Create static
