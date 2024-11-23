@@ -1,6 +1,8 @@
 import { model, Schema } from 'mongoose';
 import { StudentModel, TStudent } from './student.interface';
 import validator from 'validator';
+import bcrypt from 'bcrypt';
+import config from '../../config';
 
 // step 02: create schema
 const studentSchema = new Schema<TStudent, StudentModel>({
@@ -28,6 +30,22 @@ const studentSchema = new Schema<TStudent, StudentModel>({
       },
     },
   },
+  password: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: 8,
+    validate: {
+      validator: function (value: string) {
+        const passwordRegex =
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        return passwordRegex.test(value);
+      },
+      message:
+        'Password must contain at least 8 characters, including uppercase letters, lowercase letters, numbers, and special characters.',
+    },
+  },
+
   email: {
     type: String,
     required: true,
@@ -133,6 +151,23 @@ studentSchema.statics.isUserExists = async function (
   const existUser = await Student.findOne({ email });
   return existUser;
 };
+
+//  pre save middleware/hooks
+studentSchema.pre('save', async function (next) {
+  // hashing password and save into DB
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this; // this refers to the DOC
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  next();
+});
+
+// post hook/middleware
+studentSchema.post('save', function () {
+  console.log(this, 'from post hook: saved data');
+});
 
 // step 03: create model
 export const Student = model<TStudent, StudentModel>('Student', studentSchema);

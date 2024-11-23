@@ -105,6 +105,7 @@ export const ZodStudentValidationSchema = z.object({
       )
       .nonempty('Last name is required.'),
   }),
+  password: z.string().max(30),
   email: z
     .string()
     .email('Email must be a valid email address.')

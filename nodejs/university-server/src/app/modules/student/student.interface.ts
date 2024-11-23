@@ -8,6 +8,7 @@ export interface TStudent {
     lastName: string;
   };
   email: string;
+  password: string;
   dateOfBirth: string;
   gender: 'male' | 'female' | 'others';
   age: number;
