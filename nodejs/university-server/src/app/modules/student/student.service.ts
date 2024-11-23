@@ -30,8 +30,20 @@ const getSingleStudentFromDB = async (id: string) => {
   return res;
 };
 
+// delete a single student from the database
+const deleteSingleStudentFromDB = async (id: string) => {
+  const getStudent = await getSingleStudentFromDB(id);
+  if (getStudent) {
+    const res = await Student.updateOne({ _id: id }, { isDeleted: true });
+    return res;
+  } else {
+    throw new Error('Student not found');
+  }
+};
+
 export const StudentServices = {
   createStudentIntoDB,
   getAllStudentFromDB,
   getSingleStudentFromDB,
+  deleteSingleStudentFromDB,
 };

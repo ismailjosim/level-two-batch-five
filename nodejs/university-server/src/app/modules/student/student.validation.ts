@@ -156,4 +156,5 @@ export const ZodStudentValidationSchema = z.object({
       }),
     })
     .default('active'),
+  isDeleted: z.boolean().optional(),
 });

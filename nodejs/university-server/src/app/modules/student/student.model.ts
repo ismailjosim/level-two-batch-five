@@ -134,6 +134,10 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     default: 'active',
     trim: true,
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 //* custom instance methods
@@ -165,8 +169,16 @@ studentSchema.pre('save', async function (next) {
 });
 
 // post hook/middleware
-studentSchema.post('save', function () {
-  console.log(this, 'from post hook: saved data');
+studentSchema.post('save', function (doc, next) {
+  //  don't send password after saving password in doc
+  doc.password = '';
+  next();
+});
+
+// aggregation middleware functions for find query
+studentSchema.post('find', function (next) {
+  console.log(this);
+  next();
 });
 
 // step 03: create model

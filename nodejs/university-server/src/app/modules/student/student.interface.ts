@@ -26,6 +26,7 @@ export interface TStudent {
   };
   profileImage?: string;
   isActive: 'active' | 'blocked';
+  isDeleted?: true | false;
 }
 
 //* Create static
