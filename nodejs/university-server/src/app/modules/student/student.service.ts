@@ -27,15 +27,25 @@ const getAllStudentFromDB = async () => {
 };
 const getSingleStudentFromDB = async (id: string) => {
   const res = await Student.findById(id);
+  // method 2: using aggregate
+  // const res = await Student.aggregate([
+  //   { $match: { _id: new mongoose.Types.ObjectId(id) } },
+  // ]);
+
   return res;
 };
 
 // delete a single student from the database
 const deleteSingleStudentFromDB = async (id: string) => {
   const getStudent = await getSingleStudentFromDB(id);
+  console.log(getStudent);
   if (getStudent) {
-    const res = await Student.updateOne({ _id: id }, { isDeleted: true });
-    return res;
+    if (getStudent.isDeleted === false) {
+      const res = await Student.updateOne({ _id: id }, { isDeleted: true });
+      return res;
+    } else {
+      throw new Error('Student is already deleted');
+    }
   } else {
     throw new Error('Student not found');
   }

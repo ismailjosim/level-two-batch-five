@@ -176,8 +176,18 @@ studentSchema.post('save', function (doc, next) {
 });
 
 // aggregation middleware functions for find query
-studentSchema.post('find', function (next) {
-  console.log(this);
+studentSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+studentSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+// work with aggregate
+studentSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
   next();
 });
 
