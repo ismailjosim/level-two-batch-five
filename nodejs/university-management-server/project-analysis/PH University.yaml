@@ -1,0 +1,57 @@
+*
+2 ta jinis thake minimum viable product(MVP):
+1) Authentication 2) Management
+
+
+How Software Should start:
+
+1. Planning: what we want to build. mainly Product owner,Project Manager or Business Analyst do this part.
+2. Analyze: it has two part: System Architect and UI/UX Designer.
+3. Design: Frontend Developer, Backend Developer, Full Stack Developer
+4. Testing: Solution Architect, QA Engineer, Tester.
+5. Deployment: Database Administrator, DevOPS
+6. Maintenance: Support Engineer, Tester, Developer
+
+This method also called SDLC = Software Development Life Cycle.
+
+Analyze Part: we need to make some document like:
+PRD = Product Requirements Document.
+BRD = Business Requirements Document.
+SRS = Software Requirements Specification.
+FRD = Functional Requirements Document.
+
+Design: in this part we defined our
+1. system design of software.
+2. High Level Design Document.
+3. Low Level Design Document.
+4. Database Schema.
+
+Development:
+1. Frontend Developer.
+2. Backend Developer.
+3. API Integration.
+4. Database Schema.
+
+Testing section:
+1. Test Plan.
+2. Test Case.
+3. Test Scripts.
+4. Defects Report.
+
+Deployment section:
+1. Release Notes.
+2. Installation Guides.
+3. Configuration Guides.
+
+Maintenance section:
+1. change Request.
+2. Bug Reports.
+3. Patch Release.
+
+SDLC is a ideological term. in real world companies don't maintain in properly. because of company size. Mid and large organization follow this but small or start up companies always don't follow it properly.
+
+
+for personal project, we can start with:
+1. requirement analysis.
+2. ER Diagram.
+3. API Endpoints.
