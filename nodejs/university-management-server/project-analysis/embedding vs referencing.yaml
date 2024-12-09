@@ -1,0 +1,25 @@
+when our data won't group we will use embedding.
+when our data scale is huge and it will continuously grow then we will reference our data with main data.
+
+Things to remember:
+
+👉 In mongoDB we can embed maximum 16MB data. [if it's grow]
+👉 We can't embed growing data.
+👉 referencing prevent data duplication.
+
+
+Pros and Const of Embedding
+Pros            Cons
+Faster Reading | Slow Writing
+Update all data with single query | Update query can be complex
+less expensive | Limited Size
+Lookup | Data Duplicity
+
+Pros and Const of Referencing
+Pros            Cons
+Faster Writing | Slow Reading
+Avoid data duplicacy | Expensive Lookup
+Scalability
+
+
+Tulip, Assignment-10-Orchid, Assignment-10-Camellia
