@@ -2,28 +2,32 @@ import { Request, Response } from 'express';
 import userSchemaValidation from './user.validation';
 import { UserServices } from './user.service';
 
-const createUser = async (req: Request, res: Response) => {
+// Post: Single student
+const createStudent = async (req: Request, res: Response) => {
   try {
-    const userData = req.body;
-    const validationData = userSchemaValidation.parse(userData);
-    const result = await UserServices.createUserIntoDB(validationData);
+    const student = req.body;
+    // Create a Schema validation using ZOD
+    const zodParseData = ZodStudentValidationSchema.parse(student);
+
+    const result = await StudentServices.createStudentIntoDB(zodParseData);
 
     // send response
     res.status(201).json({
       success: true,
-      message: 'User created successfully',
+      message: 'Student created successfully',
       data: result,
     });
   } catch (error: unknown) {
     if (error instanceof Error) {
       res.status(500).json({
         success: false,
-        message: error.message || 'There Was An Error While Creating User.',
+        message: error.message || 'There was an error creating the student',
+        error,
       });
     } else {
       res.status(500).json({
-        status: false,
-        message: 'An Unexpected Error Occurred.',
+        success: false,
+        message: 'An unexpected error occurred',
         error,
       });
     }
