@@ -1,15 +1,14 @@
 import { Request, Response } from 'express';
-import userSchemaValidation from './user.validation';
 import { UserServices } from './user.service';
 
 // Post: Single student
 const createStudent = async (req: Request, res: Response) => {
   try {
-    const student = req.body;
+    const { password, student } = req.body;
     // Create a Schema validation using ZOD
-    const zodParseData = ZodStudentValidationSchema.parse(student);
+    // const zodParseData = ZodStudentValidationSchema.parse(student);
 
-    const result = await StudentServices.createStudentIntoDB(zodParseData);
+    const result = await UserServices.createStudentIntoDB(password, student);
 
     // send response
     res.status(201).json({
@@ -112,7 +111,7 @@ const deleteSingleUser = async (req: Request, res: Response) => {
 
 // export user controllers
 export const UserControllers = {
-  createUser,
+  createStudent,
   getAllUser,
   getSingleUser,
   deleteSingleUser,

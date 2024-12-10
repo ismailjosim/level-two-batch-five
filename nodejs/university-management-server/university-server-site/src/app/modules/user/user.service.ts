@@ -1,8 +1,36 @@
-import { IUser } from './user.interface';
+import config from '../../config';
+import { TStudent } from '../student/student.interface';
+import { Student } from '../student/student.model';
+import { NewUser } from './user.interface';
 import { User } from './user.model';
 
-const createUserIntoDB = async (useData: IUser) => {
-  const res = await User.create(useData);
+const createStudentIntoDB = async (password: string, studentData: TStudent) => {
+  const user: NewUser = {};
+  // * if user did't provide a password, use default password
+  user.password = password || (config.default_password as string);
+
+  // * set student role
+  user.role = 'student';
+
+  //* manually generate a ID for the student
+  user.id = '20230100001';
+
+  //* create a new user
+  const res = await User.create(user);
+
+  //* create a new student: here id will be embedded
+  if (Object.keys(res).length) {
+    // set id, _id as user
+    studentData.id = res.id;
+    studentData.user = res._id;
+
+    // create a new student in database
+    const studentRes = await Student.create(studentData);
+
+    return studentRes;
+  }
+
+  //* save method in mongoose
   return res;
 };
 
@@ -32,7 +60,7 @@ const deleteSingleUserFromDB = async (id: string) => {
 
 // export user
 export const UserServices = {
-  createUserIntoDB,
+  createStudentIntoDB,
   getAllUserFromDB,
   getSingleUserFromDB,
   deleteSingleUserFromDB,

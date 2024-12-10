@@ -8,3 +8,9 @@ export interface IUser {
   status: 'in-progress' | 'blocked';
   isDeleted?: boolean;
 }
+
+export interface NewUser {
+  role: string;
+  password: string;
+  id: string;
+}
