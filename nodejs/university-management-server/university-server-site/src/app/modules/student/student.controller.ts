@@ -1,8 +1,12 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { StudentServices } from './student.service';
 
 // Get All Students
-const getAllStudents = async (req: Request, res: Response) => {
+const getAllStudents = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const result = await StudentServices.getAllStudentFromDB();
     res.status(201).json({
@@ -12,23 +16,15 @@ const getAllStudents = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      res.status(500).json({
-        success: false,
-        message: error.message || 'There was an error creating the student',
-        error,
-      });
-    } else {
-      res.status(500).json({
-        success: false,
-        message: 'An unexpected error occurred',
-        error,
-      });
-    }
+    next(error);
   }
 };
 // Get single Student with ID
-const getSingleStudent = async (req: Request, res: Response) => {
+const getSingleStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { id } = req.params;
     const result = await StudentServices.getSingleStudentFromDB(id);
@@ -38,22 +34,14 @@ const getSingleStudent = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      res.status(500).json({
-        success: false,
-        message: error.message || 'There was an error creating the student',
-        error,
-      });
-    } else {
-      res.status(500).json({
-        success: false,
-        message: 'An unexpected error occurred',
-        error,
-      });
-    }
+    next(error);
   }
 };
-const deleteSingleStudent = async (req: Request, res: Response) => {
+const deleteSingleStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { id } = req.params;
     const result = await StudentServices.deleteSingleStudentFromDB(id);
@@ -63,19 +51,7 @@ const deleteSingleStudent = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      res.status(500).json({
-        success: false,
-        message: error.message || 'There was an error creating the student',
-        error,
-      });
-    } else {
-      res.status(500).json({
-        success: false,
-        message: 'An unexpected error occurred',
-        error,
-      });
-    }
+    next(error);
   }
 };
 

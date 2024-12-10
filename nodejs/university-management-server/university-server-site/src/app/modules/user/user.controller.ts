@@ -1,8 +1,12 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { UserServices } from './user.service';
 
 // Post: Single student
-const createStudent = async (req: Request, res: Response) => {
+const createStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { password, student } = req.body;
     // Create a Schema validation using ZOD
@@ -17,23 +21,11 @@ const createStudent = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      res.status(500).json({
-        success: false,
-        message: error.message || 'There was an error creating the student',
-        error,
-      });
-    } else {
-      res.status(500).json({
-        success: false,
-        message: 'An unexpected error occurred',
-        error,
-      });
-    }
+    next(error);
   }
 };
 
-const getAllUser = async (req: Request, res: Response) => {
+const getAllUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const result = await UserServices.getAllUserFromDB();
     res.status(201).json({
@@ -43,22 +35,15 @@ const getAllUser = async (req: Request, res: Response) => {
       result,
     });
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({
-        success: false,
-        message: error.message || 'There Was An Error While Getting User.',
-      });
-    } else {
-      res.status(500).json({
-        status: false,
-        message: 'An Unexpected Error Occurred.',
-        error,
-      });
-    }
+    next(error);
   }
 };
 
-const getSingleUser = async (req: Request, res: Response) => {
+const getSingleUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { id } = req.params;
     const result = await UserServices.getSingleUserFromDB(id);
@@ -68,22 +53,14 @@ const getSingleUser = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      res.status(500).json({
-        success: false,
-        message: error.message || 'There was an error getting the User',
-        error,
-      });
-    } else {
-      res.status(500).json({
-        success: false,
-        message: 'An unexpected error occurred',
-        error,
-      });
-    }
+    next(error);
   }
 };
-const deleteSingleUser = async (req: Request, res: Response) => {
+const deleteSingleUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { id } = req.params;
     const result = await UserServices.deleteSingleUserFromDB(id);
@@ -93,19 +70,7 @@ const deleteSingleUser = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      res.status(500).json({
-        success: false,
-        message: error.message || 'There was an error creating the User',
-        error,
-      });
-    } else {
-      res.status(500).json({
-        success: false,
-        message: 'An unexpected error occurred',
-        error,
-      });
-    }
+    next(error);
   }
 };
 
