@@ -1,12 +1,18 @@
 import { model, Schema } from 'mongoose';
 import { StudentModel, TStudent } from './student.interface';
 import validator from 'validator';
-import bcrypt from 'bcrypt';
-import config from '../../config';
 
 // step 02: create schema
 const studentSchema = new Schema<TStudent, StudentModel>(
   {
+    id: { type: String, required: [true, 'ID is Required'] },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      unique: true,
+      required: [true, 'User is Required'],
+    },
+
     name: {
       firstName: {
         type: String,
@@ -31,28 +37,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
         },
       },
     },
-    password: {
-      type: String,
-      required: true,
-      trim: true,
-      minlength: 8,
-      validate: {
-        validator: function (value: string) {
-          const passwordRegex =
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-          return passwordRegex.test(value);
-        },
-        message:
-          'Password must contain at least 8 characters, including uppercase letters, lowercase letters, numbers, and special characters.',
-      },
-    },
 
-    email: {
-      type: String,
-      required: true,
-      trim: true,
-      unique: true,
-    },
     dateOfBirth: {
       type: String,
       required: [true, 'Date of birth is required.'],
@@ -67,15 +52,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       required: [true, 'Gender is required.'],
       trim: true,
     },
-    age: { type: Number, required: [true, 'Age is required.'] },
-    major: { type: String, required: [true, 'Major is required.'], trim: true },
-    gpa: {
-      type: Number,
-      min: [0, 'GPA cannot be less than 0.'],
-      max: [4, 'GPA cannot be more than 4.'],
-      required: [true, 'GPA is required.'],
-    },
-    contact: {
+    contactNo: {
       type: String,
       required: [true, 'Contact number is required.'],
       trim: true,
@@ -125,16 +102,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       required: [true, 'Profile image URL is required.'],
       trim: true,
     },
-    isActive: {
-      type: String,
-      required: [true, 'Status is required.'],
-      enum: {
-        values: ['active', 'blocked'],
-        message: 'Status must be either "active" or "blocked".',
-      },
-      default: 'active',
-      trim: true,
-    },
+
     isDeleted: {
       type: Boolean,
       default: false,
@@ -147,61 +115,34 @@ const studentSchema = new Schema<TStudent, StudentModel>(
   },
 );
 
-//* custom instance methods
-// studentSchema.methods.isUserExists = async function (
-//   email: string,
-// ): Promise<TStudent | null> {
-//   const existUser = await Student.findOne({ email });
-//   return existUser;
-// };
-
 // virtual
 studentSchema.virtual('fullName').get(function () {
-  return `${this.name.firstName} ${this.name.middleName ? this.name.middleName + ' ' : ''}${this.name.lastName}`;
+  return this.name.firstName + this.name.middleName + this.name.lastName;
 });
 
-// * create a custom static method
-studentSchema.statics.isUserExists = async function (
-  email: string,
-): Promise<TStudent | null> {
-  const existUser = await Student.findOne({ email });
-  return existUser;
-};
-
-//  pre save middleware/hooks
-studentSchema.pre('save', async function (next) {
-  // hashing password and save into DB
-  // eslint-disable-next-line @typescript-eslint/no-this-alias
-  const user = this; // this refers to the DOC
-  user.password = await bcrypt.hash(
-    user.password,
-    Number(config.bcrypt_salt_rounds),
-  );
-  next();
-});
-
-// post hook/middleware
-studentSchema.post('save', function (doc, next) {
-  //  don't send password after saving password in doc
-  doc.password = '';
-  next();
-});
-
-// aggregation middleware functions for find query
+// Query Middleware
 studentSchema.pre('find', function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
 });
+
 studentSchema.pre('findOne', function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
 });
 
-// work with aggregate
 studentSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
   next();
 });
+
+// * create a custom static method
+studentSchema.statics.isUserExists = async function (id: string) {
+  const existingUser = await Student.findOne({ id });
+  return existingUser;
+};
+
+//  pre save middleware/hooks
 
 // step 03: create model
 export const Student = model<TStudent, StudentModel>('Student', studentSchema);

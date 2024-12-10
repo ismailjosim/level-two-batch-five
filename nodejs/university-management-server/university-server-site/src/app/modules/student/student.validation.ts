@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const ZodStudentValidationSchema = z.object({
+  id: z.string(),
   name: z.object({
     firstName: z
       .string()
@@ -19,7 +20,6 @@ export const ZodStudentValidationSchema = z.object({
       )
       .nonempty('Last name is required.'),
   }),
-  password: z.string().max(30),
   email: z
     .string()
     .email('Email must be a valid email address.')
@@ -30,22 +30,7 @@ export const ZodStudentValidationSchema = z.object({
       message: 'Gender must be either "male", "female", or "others".',
     }),
   }),
-  age: z
-    .number({
-      required_error: 'Age is required.',
-      invalid_type_error: 'Age must be a number.',
-    })
-    .int('Age must be an integer.')
-    .nonnegative('Age must be a non-negative number.'),
-  major: z.string().nonempty('Major is required.'),
-  gpa: z
-    .number({
-      required_error: 'GPA is required.',
-      invalid_type_error: 'GPA must be a number.',
-    })
-    .min(0, 'GPA cannot be less than 0.')
-    .max(4, 'GPA cannot be more than 4.'),
-  contact: z.string().nonempty('Contact number is required.'),
+  contactNo: z.string().nonempty('Contact number is required.'),
   bloodGroup: z
     .enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'], {
       errorMap: () => ({ message: 'Invalid blood group.' }),

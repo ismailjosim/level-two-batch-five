@@ -5,7 +5,7 @@ const router = express.Router();
 
 // define user route
 router.get('/', UserControllers.getAllUser);
-router.post('/create-user', UserControllers.createUser);
-router.get('/:id', UserControllers.createUser);
+router.post('/create-student', UserControllers.createStudent);
+// router.get('/:id', UserControllers.createUser);
 
 export const UserRoutes = router;

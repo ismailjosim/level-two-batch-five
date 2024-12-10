@@ -1,37 +1,36 @@
 import config from '../../config';
 import { TStudent } from '../student/student.interface';
 import { Student } from '../student/student.model';
-import { NewUser } from './user.interface';
+import { IUser } from './user.interface';
 import { User } from './user.model';
 
 const createStudentIntoDB = async (password: string, studentData: TStudent) => {
-  const user: NewUser = {};
+  // * create a user object
+  const userData: Partial<IUser> = {};
+
   // * if user did't provide a password, use default password
-  user.password = password || (config.default_password as string);
+  userData.password = password || (config.default_password as string);
 
   // * set student role
-  user.role = 'student';
+  userData.role = 'student';
 
   //* manually generate a ID for the student
-  user.id = '20230100001';
+  userData.id = '2030100001';
 
   //* create a new user
-  const res = await User.create(user);
+  const newUser = await User.create(userData);
 
   //* create a new student: here id will be embedded
-  if (Object.keys(res).length) {
+  if (Object.keys(newUser).length) {
     // set id, _id as user
-    studentData.id = res.id;
-    studentData.user = res._id;
+    studentData.id = newUser.id;
+    studentData.user = newUser._id; // it's a reference id of the new user
 
     // create a new student in database
     const studentRes = await Student.create(studentData);
 
     return studentRes;
   }
-
-  //* save method in mongoose
-  return res;
 };
 
 const getAllUserFromDB = async () => {
