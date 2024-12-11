@@ -6,6 +6,7 @@ import validator from 'validator';
 const studentSchema = new Schema<TStudent, StudentModel>(
   {
     id: { type: String, required: [true, 'ID is Required'] },
+    email: { type: String, required: [true, 'Email is Required'] },
     user: {
       type: Schema.Types.ObjectId,
       ref: 'User',

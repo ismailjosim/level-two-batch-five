@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { StudentServices } from './student.service';
+import sendResponse from '../../utils/sendResponse';
 
 // Get All Students
 const getAllStudents = async (
@@ -9,10 +10,11 @@ const getAllStudents = async (
 ) => {
   try {
     const result = await StudentServices.getAllStudentFromDB();
-    res.status(201).json({
+
+    sendResponse(res, {
+      statusCode: 200,
       success: true,
       message: 'All students fetched successfully',
-      total: result.length,
       data: result,
     });
   } catch (error: unknown) {
@@ -28,7 +30,9 @@ const getSingleStudent = async (
   try {
     const { id } = req.params;
     const result = await StudentServices.getSingleStudentFromDB(id);
-    res.status(201).json({
+
+    sendResponse(res, {
+      statusCode: 200,
       success: true,
       message: 'Found student with id ' + id,
       data: result,
@@ -45,7 +49,9 @@ const deleteSingleStudent = async (
   try {
     const { id } = req.params;
     const result = await StudentServices.deleteSingleStudentFromDB(id);
-    res.status(201).json({
+
+    sendResponse(res, {
+      statusCode: 200,
       success: true,
       message: 'student is Deleted successfully. ID: ' + id,
       data: result,

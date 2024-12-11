@@ -4,6 +4,7 @@ const globalErrorHandler: ErrorRequestHandler = (
   error: unknown,
   req: Request,
   res: Response,
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   next: NextFunction,
 ) => {
   if (error instanceof Error) {

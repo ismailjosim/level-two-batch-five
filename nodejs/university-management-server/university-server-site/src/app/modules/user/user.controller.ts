@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { UserServices } from './user.service';
+import sendResponse from '../../utils/sendResponse';
 
 // Post: Single student
 const createStudent = async (
@@ -15,7 +16,8 @@ const createStudent = async (
     const result = await UserServices.createStudentIntoDB(password, student);
 
     // send response
-    res.status(201).json({
+    sendResponse(res, {
+      statusCode: 200,
       success: true,
       message: 'Student created successfully',
       data: result,
@@ -28,11 +30,11 @@ const createStudent = async (
 const getAllUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const result = await UserServices.getAllUserFromDB();
-    res.status(201).json({
+    sendResponse(res, {
+      statusCode: 200,
       success: true,
       message: 'All Users Data Fetched Successfully!',
-      total: result.length,
-      result,
+      data: result,
     });
   } catch (error) {
     next(error);
@@ -47,7 +49,9 @@ const getSingleUser = async (
   try {
     const { id } = req.params;
     const result = await UserServices.getSingleUserFromDB(id);
-    res.status(201).json({
+
+    sendResponse(res, {
+      statusCode: 200,
       success: true,
       message: 'Found User with id ' + id,
       data: result,
@@ -64,7 +68,8 @@ const deleteSingleUser = async (
   try {
     const { id } = req.params;
     const result = await UserServices.deleteSingleUserFromDB(id);
-    res.status(201).json({
+    sendResponse(res, {
+      statusCode: 200,
       success: true,
       message: 'User is Deleted successfully. ID: ' + id,
       data: result,

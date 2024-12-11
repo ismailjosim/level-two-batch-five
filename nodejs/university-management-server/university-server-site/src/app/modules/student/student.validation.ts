@@ -22,7 +22,7 @@ export const ZodStudentValidationSchema = z.object({
   }),
   email: z
     .string()
-    .email('Email must be a valid email address.')
+    .email('You must Provide a valid email address.')
     .nonempty('Email is required.'),
   dateOfBirth: z.string().nonempty('Date of birth is required.'),
   gender: z.enum(['male', 'female', 'others'], {

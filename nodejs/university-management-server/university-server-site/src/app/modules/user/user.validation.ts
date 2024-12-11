@@ -11,7 +11,6 @@ const userSchemaValidation = z.object({
   dateOfBirth: z.date({
     message: 'date Of Birth must be a valid date.',
   }),
-  email: z.string().email({ message: 'Email must be a valid email address.' }),
 });
 
 export default userSchemaValidation;
