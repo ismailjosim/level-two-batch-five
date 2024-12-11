@@ -11,16 +11,15 @@ const app: Application = express();
 app.use(express.json());
 app.use(cors());
 
-// Application routes
+//* Application routes
 app.use('/api/v1', router);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('University Server Default Route');
 });
 
-app.use(routeNotFound);
-
 // global middlewares
+app.use(routeNotFound);
 app.use(globalErrorHandler);
 
 export default app;
