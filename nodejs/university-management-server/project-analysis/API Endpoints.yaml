@@ -1,7 +1,7 @@
 
 API Endpoints:
   🚀User:
-        /users/create-student (POST)
+        /users/create-user (POST)
         /users/create-faculty (POST)
         /users/create-admin (POST)
 
