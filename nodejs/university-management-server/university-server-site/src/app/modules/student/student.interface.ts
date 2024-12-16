@@ -18,6 +18,7 @@ export interface TStudent {
   id: string;
   user: Types.ObjectId;
   name: IUserName;
+  password: string;
   gender: 'male' | 'female' | 'others';
   dateOfBirth: string;
   email: string;

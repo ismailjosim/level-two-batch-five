@@ -8,9 +8,6 @@ const userSchemaValidation = z.object({
     .min(8, { message: 'Password must be at least 8 characters long.' })
     .max(20, { message: 'Password cannot exceed 20 characters.' })
     .optional(),
-  dateOfBirth: z.date({
-    message: 'date Of Birth must be a valid date.',
-  }),
 });
 
 export default userSchemaValidation;
