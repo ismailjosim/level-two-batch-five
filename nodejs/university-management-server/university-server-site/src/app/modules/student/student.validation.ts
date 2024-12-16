@@ -26,7 +26,7 @@ const createStudentValidationSchema = z.object({
         .string()
         .email('You must Provide a valid email address.')
         .nonempty('Email is required.'),
-      dateOfBirth: z.string().nonempty('Date of birth is required.'),
+      dateOfBirth: z.date().optional(),
       gender: z.enum(['male', 'female', 'others'], {
         errorMap: () => ({
           message: 'Gender must be either "male", "female", or "others".',
