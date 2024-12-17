@@ -14,31 +14,53 @@ const createAcademicSemesterIntoDB = async (
   return res;
 };
 
-// const getAllUserFromDB = async () => {
-//   const res = await User.find();
-//   return res;
-// };
+const getAllAcademicSemesterFromDB = async () => {
+  const res = await AcademicSemesterModel.find();
+  return res;
+};
 
-// const getSingleUserFromDB = async (id: string) => {
-//   const res = await User.findById(id);
-//   return res;
-// };
+const getSingleAcademicSemesterFromDB = async (id: string) => {
+  const res = await AcademicSemesterModel.findById(id);
+  return res;
+};
 
-// const deleteSingleUserFromDB = async (id: string) => {
-//   const getUser = await getSingleUserFromDB(id);
-//   if (getUser) {
-//     if (getUser.isDeleted === false) {
-//       const res = await User.updateOne({ _id: id }, { isDeleted: true });
-//       return res;
-//     } else {
-//       throw new Error('User is Already Deleted!');
-//     }
-//   } else {
-//     throw new Error('User Not Found!');
-//   }
-// };
+const deleteSingleAcademicSemesterFromDB = async (id: string) => {
+  const getAcademicSemester = await getSingleAcademicSemesterFromDB(id);
+  if (getAcademicSemester) {
+    const res = await AcademicSemesterModel.deleteOne({ _id: id });
+    return res;
+  } else {
+    throw new Error('Semester Not Found!');
+  }
+};
+
+const updateAcademicSemesterFromDB = async (
+  id: string,
+  payload: Partial<IAcademicSemesterInterface>,
+) => {
+  if (
+    payload.name &&
+    payload.code &&
+    AcademicSemesterCodeNameMapper[payload.name] !== payload.code
+  ) {
+    throw new Error('Semester Name and Semester Code does not match!');
+  }
+  const result = await AcademicSemesterModel.findOneAndUpdate(
+    { _id: id },
+    payload,
+    {
+      new: true,
+    },
+  );
+
+  return result;
+};
 
 // export user
 export const AcademicSemesterServices = {
   createAcademicSemesterIntoDB,
+  getAllAcademicSemesterFromDB,
+  getSingleAcademicSemesterFromDB,
+  deleteSingleAcademicSemesterFromDB,
+  updateAcademicSemesterFromDB,
 };
