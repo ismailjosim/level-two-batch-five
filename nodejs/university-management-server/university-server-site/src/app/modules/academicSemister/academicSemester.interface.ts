@@ -15,6 +15,10 @@ export type Months =
 export type TSemesterNames = 'Autumn' | 'Summer' | 'Fall';
 export type TSemesterCode = '01' | '02' | '03';
 
+export type TAcademicSemesterCodeNameMapper = {
+  [key: string]: string;
+};
+
 export interface IAcademicSemesterInterface {
   name: TSemesterNames;
   code: TSemesterCode;

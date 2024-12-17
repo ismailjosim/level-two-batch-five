@@ -19,6 +19,22 @@ const academicSemesterSchema = new Schema<IAcademicSemesterInterface>(
   },
 );
 
+academicSemesterSchema.pre('save', async function (next) {
+  // check if semester already exist in DB
+  const query = {
+    year: this.year,
+    name: this.name,
+  };
+  const isSemesterExist = await AcademicSemesterModel.findOne(query);
+
+  if (isSemesterExist) {
+    throw new Error(
+      `${this.name} semester is already exists for year ${this.year}`,
+    );
+  }
+  next();
+});
+
 export const AcademicSemesterModel = model<IAcademicSemesterInterface>(
   'academicSemester',
   academicSemesterSchema,
