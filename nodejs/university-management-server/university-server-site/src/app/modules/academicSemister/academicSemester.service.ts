@@ -1,10 +1,16 @@
+import { AcademicSemesterCodeNameMapper } from './academicSemester.constant';
 import { IAcademicSemesterInterface } from './academicSemester.interface';
 import { AcademicSemesterModel } from './academicSemester.model';
 
 const createAcademicSemesterIntoDB = async (
-  academicSemesterData: IAcademicSemesterInterface,
+  payload: IAcademicSemesterInterface,
 ) => {
-  const res = await AcademicSemesterModel.create(academicSemesterData);
+  // check if the semester code match with the predefined semester names ['Autumn' = '01','Summer' = '02','Fall' = '03']
+  if (AcademicSemesterCodeNameMapper[payload.name] !== payload.code) {
+    throw new Error('Semester Name and Semester Code does not match!');
+  }
+
+  const res = await AcademicSemesterModel.create(payload);
   return res;
 };
 
