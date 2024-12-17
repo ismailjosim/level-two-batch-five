@@ -1,4 +1,5 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
+import { ZodError } from 'zod';
 
 const globalErrorHandler: ErrorRequestHandler = (
   error: unknown,
@@ -7,13 +8,26 @@ const globalErrorHandler: ErrorRequestHandler = (
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   next: NextFunction,
 ) => {
-  if (error instanceof Error) {
+  if (error instanceof ZodError) {
+    // Handle Zod validation errors
+    const formattedErrors = error.issues.map((issue) => ({
+      path: issue.path.join('.'),
+      message: issue.message,
+    }));
+    res.status(400).json({
+      success: false,
+      message: 'Validation failed',
+      error: formattedErrors,
+    });
+  } else if (error instanceof Error) {
+    // General application errors
     res.status(500).json({
       success: false,
-      message: error.message || 'There was an error creating the student',
+      message: error.message || 'There was an error processing your request',
       error: {
         name: error.name,
         message: error.message,
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
       },
     });
   } else {
@@ -23,6 +37,7 @@ const globalErrorHandler: ErrorRequestHandler = (
       error,
     });
   }
+  return;
 };
 
 export default globalErrorHandler;
