@@ -38,7 +38,7 @@ const studentSchema = new Schema<TStudent, StudentModel>({
   },
 
   dateOfBirth: {
-    type: Date,
+    type: String,
     required: [true, 'Date of birth is required.'],
   },
   gender: {
@@ -99,6 +99,14 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     type: String,
     required: [true, 'Profile image URL is required.'],
     trim: true,
+  },
+  admissionSemester: {
+    type: Schema.Types.ObjectId,
+    ref: 'AcademicSemester',
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false,
   },
 });
 
