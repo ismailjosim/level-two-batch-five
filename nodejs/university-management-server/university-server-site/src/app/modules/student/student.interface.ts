@@ -20,7 +20,7 @@ export interface TStudent {
   name: IUserName;
   password: string;
   gender: 'male' | 'female' | 'others';
-  dateOfBirth: Date;
+  dateOfBirth: string;
   email: string;
   contactNo: string;
   bloodGroup?: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
@@ -28,7 +28,8 @@ export interface TStudent {
   permanentAddress: string;
   guardian: IGuardian;
   profileImage?: string;
-  isDeleted?: true | false;
+  admissionSemester: Types.ObjectId;
+  isDeleted: boolean;
 }
 
 export interface StudentModel extends Model<TStudent> {
