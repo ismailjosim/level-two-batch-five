@@ -26,7 +26,7 @@ export const generateStudentID = async (
 
   const lastStudentId = await findLastStudentID();
   const lastStudentSemesterCode = lastStudentId?.slice(4, 6);
-  const lastStudentYear = lastStudentId?.slice(0, 4);
+  const lastStudentYear = lastStudentId?.substring(0, 4);
   const currentSemesterCode = payload.code;
   const currentYear = payload.year;
   if (
@@ -34,7 +34,7 @@ export const generateStudentID = async (
     lastStudentSemesterCode === currentSemesterCode &&
     lastStudentYear === currentYear
   ) {
-    currentId = lastStudentId.slice(6);
+    currentId = lastStudentId.substring(6);
   }
   let incrementId = (Number(currentId) + 1).toString().padStart(4, '0');
 
