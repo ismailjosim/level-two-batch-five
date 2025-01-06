@@ -47,6 +47,7 @@ const createStudentValidationSchema = z.object({
         occupation: z.string().nonempty("Guardian's occupation is required."),
       }),
       admissionSemester: z.string(),
+      academicDepartment: z.string(),
       profileImage: z
         .string()
         .url('Profile image must be a valid URL.')

@@ -22,11 +22,25 @@ const createStudentIntoDB = async (studentData: TStudent) => {
   return res;
 };
 const getAllStudentFromDB = async () => {
-  const res = await Student.find();
+  const res = await Student.find()
+    .populate('admissionSemester')
+    .populate({
+      path: 'academicDepartment',
+      populate: {
+        path: 'academicFaculty',
+      },
+    });
   return res;
 };
 const getSingleStudentFromDB = async (id: string) => {
-  const res = await Student.findById(id);
+  const res = await Student.findById(id)
+    .populate('admissionSemester')
+    .populate({
+      path: 'academicDepartment',
+      populate: {
+        path: 'academicFaculty',
+      },
+    });
   // method 2: using aggregate
   // const res = await Student.aggregate([
   //   { $match: { _id: new mongoose.Types.ObjectId(id) } },
@@ -38,7 +52,6 @@ const getSingleStudentFromDB = async (id: string) => {
 // delete a single student from the database
 const deleteSingleStudentFromDB = async (id: string) => {
   const getStudent = await getSingleStudentFromDB(id);
-  console.log(getStudent);
   if (getStudent) {
     if (getStudent.isDeleted === false) {
       const res = await Student.updateOne({ _id: id }, { isDeleted: true });
