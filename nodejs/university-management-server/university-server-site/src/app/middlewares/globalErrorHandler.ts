@@ -8,20 +8,23 @@ const globalErrorHandler: ErrorRequestHandler = (
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   next: NextFunction,
 ) => {
+  const statusCode: number =
+    (error as { statusCode?: number }).statusCode || 500;
   if (error instanceof ZodError) {
     // Handle Zod validation errors
     const formattedErrors = error.issues.map((issue) => ({
       path: issue.path.join('.'),
       message: issue.message,
     }));
-    res.status(400).json({
+    res.status(statusCode).json({
       success: false,
       message: 'Validation failed',
       error: formattedErrors,
     });
   } else if (error instanceof Error) {
     // General application errors
-    res.status(500).json({
+
+    res.status(statusCode).json({
       success: false,
       message: error.message || 'There was an error processing your request',
       error: {
@@ -31,7 +34,7 @@ const globalErrorHandler: ErrorRequestHandler = (
       },
     });
   } else {
-    res.status(500).json({
+    res.status(statusCode).json({
       success: false,
       message: 'An unexpected error occurred',
       error,
