@@ -79,7 +79,6 @@ const deleteSingleStudentFromDB = async (id: string) => {
 
 const updateStudentIntoDB = async (id: string, payload: Partial<TStudent>) => {
   const { name, guardian, ...remainingStudentData } = payload;
-  console.log(payload);
 
   const modifiedUpdatedData: Record<string, unknown> = {
     ...remainingStudentData,
