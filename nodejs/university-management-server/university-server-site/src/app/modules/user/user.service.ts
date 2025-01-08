@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import config from '../../config';
 import { AcademicSemesterModel } from '../academicSemester/academicSemester.model';
 import { TStudent } from '../student/student.interface';
@@ -5,6 +6,7 @@ import { Student } from '../student/student.model';
 import { IUser } from './user.interface';
 import { User } from './user.model';
 import { generateStudentID } from './user.utils';
+import AppError from '../../errors/AppError';
 
 const createStudentIntoDB = async (password: string, payload: TStudent) => {
   // * create a user object
@@ -25,23 +27,46 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     throw new Error('Admission semester not found');
   }
 
-  // * Auto Generate ID for student: year, semesterCode, 4 digit number
-  userData.id = await generateStudentID(admissionSemester);
-  userData.email = payload.email;
+  const session = await mongoose.startSession();
+  // start session
+  session.startTransaction();
 
-  //* create a new user
-  const newUser = await User.create(userData);
+  try {
+    // * Auto Generate ID for student: year, semesterCode, 4 digit number
+    userData.id = await generateStudentID(admissionSemester);
+    userData.email = payload.email;
 
-  //* create a new student: here id will be embedded
-  if (Object.keys(newUser).length) {
+    //* create a new user => Transaction-01
+    const newUser = await User.create([userData], { session });
+
+    //* create a new student: here id will be embedded
+    if (!newUser.length) {
+      throw new AppError(404, 'Failed to create User');
+    }
+
     // set id, _id as user
-    payload.id = newUser.id;
-    payload.user = newUser._id; // it's a reference id of the new user
+    payload.id = newUser[0].id;
+    payload.user = newUser[0]._id; // it's a reference id of the new user
 
-    // create a new student in database
-    const studentRes = await Student.create(payload);
+    //* create a new student in database => Transaction-02
+    const studentRes = await Student.create([payload], { session });
+    console.log(studentRes);
+    if (!studentRes.length) {
+      throw new AppError(404, 'Failed to create Student');
+    }
 
+    //* Commit the transaction
+    await session.commitTransaction();
+    session.endSession();
+
+    //* save method in mongoose
     return studentRes;
+  } catch (error) {
+    console.log(error);
+    // Rollback the transaction in case of any error
+    await session.abortTransaction();
+    session.endSession();
+    throw new Error('Failed to create student');
   }
 };
 
