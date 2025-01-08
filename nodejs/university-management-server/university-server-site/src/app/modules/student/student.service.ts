@@ -1,29 +1,9 @@
 import mongoose from 'mongoose';
-import { TStudent } from './student.interface';
 import { Student } from './student.model';
 import AppError from '../../errors/AppError';
 import { User } from '../user/user.model';
+import { TStudent } from './student.interface';
 
-const createStudentIntoDB = async (studentData: TStudent) => {
-  //* static method in mongoose
-  const existUser = await Student.findOne({ email: studentData.email });
-  if (existUser) {
-    throw new Error('User with this email already exists from static method');
-  }
-
-  const res = await Student.create(studentData); //* mongoose built in static method
-
-  //* Call the isUserExists method on the instance
-  // const studentInstance = new Student(student); //* create a new instance
-  // const userExists = await studentInstance.isUserExists(student.email);
-  // if (userExists) {
-  //   throw new Error('User with this email already exists from custom method');
-  // }
-  // const res = await studentInstance.save(); //* mongoose built in instance method
-
-  //* save method in mongoose
-  return res;
-};
 const getAllStudentFromDB = async () => {
   const res = await Student.find()
     .populate('admissionSemester')
@@ -36,7 +16,7 @@ const getAllStudentFromDB = async () => {
   return res;
 };
 const getSingleStudentFromDB = async (id: string) => {
-  const res = await Student.findById(id)
+  const res = await Student.findOne({ id })
     .populate('admissionSemester')
     .populate({
       path: 'academicDepartment',
@@ -57,6 +37,12 @@ const deleteSingleStudentFromDB = async (id: string) => {
   const session = await mongoose.startSession();
   try {
     session.startTransaction();
+    const isStudentExist = await Student.isUserExists();
+
+    if (!isStudentExist) {
+      throw new AppError(404, 'Student not found');
+    }
+
     const deleteStudentRes = await Student.findOneAndUpdate(
       { id },
       { isDeleted: true },
@@ -86,14 +72,41 @@ const deleteSingleStudentFromDB = async (id: string) => {
     await session.abortTransaction();
     session.endSession();
     if (error) {
-      throw new Error('Something went wrong!');
+      throw new AppError(500, 'Failed to delete student');
     }
   }
 };
 
+const updateStudentIntoDB = async (id: string, payload: Partial<TStudent>) => {
+  const { name, guardian, ...remainingStudentData } = payload;
+  console.log(payload);
+
+  const modifiedUpdatedData: Record<string, unknown> = {
+    ...remainingStudentData,
+  };
+
+  if (name && Object.keys(name).length) {
+    for (const [key, value] of Object.entries(name)) {
+      modifiedUpdatedData[`name.${key}`] = value;
+    }
+  }
+
+  if (guardian && Object.keys(guardian).length) {
+    for (const [key, value] of Object.entries(guardian)) {
+      modifiedUpdatedData[`guardian.${key}`] = value;
+    }
+  }
+
+  const result = await Student.findOneAndUpdate({ id }, modifiedUpdatedData, {
+    new: true,
+    runValidators: true,
+  });
+  return result;
+};
+
 export const StudentServices = {
-  createStudentIntoDB,
   getAllStudentFromDB,
   getSingleStudentFromDB,
   deleteSingleStudentFromDB,
+  updateStudentIntoDB,
 };
