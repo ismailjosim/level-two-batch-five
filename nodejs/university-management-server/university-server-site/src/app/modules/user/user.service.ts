@@ -50,7 +50,6 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
 
     //* create a new student in database => Transaction-02
     const studentRes = await Student.create([payload], { session });
-    console.log(studentRes);
     if (!studentRes.length) {
       throw new AppError(404, 'Failed to create Student');
     }
