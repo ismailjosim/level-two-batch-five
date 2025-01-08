@@ -1,5 +1,8 @@
+import mongoose from 'mongoose';
 import { TStudent } from './student.interface';
 import { Student } from './student.model';
+import AppError from '../../errors/AppError';
+import { User } from '../user/user.model';
 
 const createStudentIntoDB = async (studentData: TStudent) => {
   //* static method in mongoose
@@ -51,16 +54,40 @@ const getSingleStudentFromDB = async (id: string) => {
 
 // delete a single student from the database
 const deleteSingleStudentFromDB = async (id: string) => {
-  const getStudent = await getSingleStudentFromDB(id);
-  if (getStudent) {
-    if (getStudent.isDeleted === false) {
-      const res = await Student.updateOne({ _id: id }, { isDeleted: true });
-      return res;
-    } else {
-      throw new Error('Student is already deleted');
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+    const deleteStudentRes = await Student.findOneAndUpdate(
+      { id },
+      { isDeleted: true },
+      { new: true, session },
+    );
+    if (!deleteStudentRes) {
+      throw new AppError(404, 'Failed To delete student');
     }
-  } else {
-    throw new Error('Student not found');
+
+    // second transaction
+    const deleteUserRes = await User.findOneAndUpdate(
+      { id },
+      { isDeleted: true },
+      { new: true, session },
+    );
+    if (!deleteUserRes) {
+      throw new AppError(404, 'Failed To delete User');
+    }
+
+    //* Commit the transaction
+    await session.commitTransaction();
+    session.endSession();
+
+    return deleteStudentRes;
+  } catch (error) {
+    // Rollback the transaction in case of any error
+    await session.abortTransaction();
+    session.endSession();
+    if (error) {
+      throw new Error('Something went wrong!');
+    }
   }
 };
 
