@@ -1,0 +1,21 @@
+Topics
+Error Handling
+Searching
+Filtering
+Pagination
+
+🚀 Understanding Zod and Mongoose Error Pattern
+
+Error Pattern
+
+{
+message,
+message,
+errorSources: {
+path,
+message
+},
+
+stack if production
+
+}
