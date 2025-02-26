@@ -1,46 +1,72 @@
-import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
+import { ErrorRequestHandler } from 'express';
 import { ZodError } from 'zod';
+import { TErrorSource } from '../../interfaces/error';
+import handleZodError from '../errors/handleZodError';
+import config from '../config';
+import handleValidationError from '../errors/handleValidationError';
+import handleCastError from '../errors/handleCastError';
+import handleDuplicateError from '../errors/handleDuplicateError';
+import AppError from '../errors/AppError';
 
-const globalErrorHandler: ErrorRequestHandler = (
-  error: unknown,
-  req: Request,
-  res: Response,
-  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-  next: NextFunction,
-) => {
-  const statusCode: number =
-    (error as { statusCode?: number }).statusCode || 500;
-  if (error instanceof ZodError) {
-    // Handle Zod validation errors
-    const formattedErrors = error.issues.map((issue) => ({
-      path: issue.path.join('.'),
-      message: issue.message,
-    }));
-    res.status(statusCode).json({
-      success: false,
-      message: 'Validation failed',
-      error: formattedErrors,
-    });
-  } else if (error instanceof Error) {
-    // General application errors
+const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
+  let statusCode = 500;
+  let message = 'Something went wrong';
 
-    res.status(statusCode).json({
-      success: false,
-      message: error.message || 'There was an error processing your request',
-      error: {
-        name: error.name,
-        message: error.message,
-        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+  let errorSources: TErrorSource = [
+    {
+      path: '',
+      message: 'Something went wrong',
+    },
+  ];
+  if (err instanceof ZodError) {
+    const simplifiedError = handleZodError(err);
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
+  } else if (err?.name === 'ValidationError') {
+    const simplifiedError = handleValidationError(err);
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
+  } else if (err?.name === 'CastError') {
+    const simplifiedError = handleCastError(err);
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
+  } else if (err?.code === 11000) {
+    const simplifiedError = handleDuplicateError(err);
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
+  } else if (err instanceof AppError) {
+    statusCode = err?.statusCode;
+    message = err.message;
+    errorSources = [
+      {
+        path: '',
+        message: err?.message,
       },
-    });
-  } else {
-    res.status(statusCode).json({
-      success: false,
-      message: 'An unexpected error occurred',
-      error,
-    });
+    ];
+  } else if (err instanceof Error) {
+    message = err.message;
+    errorSources = [
+      {
+        path: '',
+        message: err?.message,
+      },
+    ];
   }
-  return;
+
+  //ultimate return
+  return res.status(statusCode).json({
+    success: false,
+    message,
+    errorSources,
+    err,
+    stack: config.NODE_ENV === 'development' ? err?.stack : null,
+  });
 };
 
 export default globalErrorHandler;
