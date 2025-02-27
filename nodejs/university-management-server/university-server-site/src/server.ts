@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 import app from './app';
 import config from './app/config';
 import mongoose from 'mongoose';
@@ -12,7 +14,7 @@ async function main() {
       console.log(`University app listening on port ${config.port}`);
     });
   } catch (error) {
-    console.log(error);
+    console.log('Found Error', error);
   }
 }
 main();

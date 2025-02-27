@@ -4,8 +4,31 @@ import AppError from '../../errors/AppError';
 import { User } from '../user/user.model';
 import { TStudent } from './student.interface';
 
-const getAllStudentFromDB = async () => {
-  const res = await Student.find()
+const getAllStudentFromDB = async (query: Record<string, unknown>) => {
+  // {email: { $regex: new RegExp(query.email as string, $options: 'i') }}
+  // {'name.firstName': { $regex: new RegExp(query.email as string, $options: 'i') }}
+  // {presentAddress: { $regex: new RegExp(query.email as string, $options: 'i') }}
+
+  // ekhane amra sob gula hard codded likhte parbo na karon ekhane field different different hote pare. ei jonno etake dynamic korte hobe.
+  let searchTerm = '';
+  if (query?.searchTerm) {
+    searchTerm = query.searchTerm as string;
+  }
+  const searchFields = [
+    'email',
+    'name.firstName',
+    'name.lastName',
+    'presentAddress',
+  ];
+
+  const searchQuery = Student.find({
+    $or: searchFields.map((key) => ({
+      [key]: { $regex: new RegExp(searchTerm, 'i') },
+    })),
+  });
+
+  const res = await searchQuery
+    .find()
     .populate('admissionSemester')
     .populate({
       path: 'academicDepartment',
@@ -13,6 +36,7 @@ const getAllStudentFromDB = async () => {
         path: 'academicFaculty',
       },
     });
+
   return res;
 };
 const getSingleStudentFromDB = async (id: string) => {
