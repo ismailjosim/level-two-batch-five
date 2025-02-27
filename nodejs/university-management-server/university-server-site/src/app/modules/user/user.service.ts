@@ -60,12 +60,11 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
 
     //* save method in mongoose
     return studentRes;
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
     // Rollback the transaction in case of any error
     await session.abortTransaction();
     session.endSession();
-    throw new Error('Failed to create student');
+    throw new Error(error);
   }
 };
 
