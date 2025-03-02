@@ -3,32 +3,35 @@ import { Student } from './student.model';
 import AppError from '../../errors/AppError';
 import { User } from '../user/user.model';
 import { TStudent } from './student.interface';
+import { studentSearchableFields } from './student.constant';
 
 const getAllStudentFromDB = async (query: Record<string, unknown>) => {
-  // {email: { $regex: new RegExp(query.email as string, $options: 'i') }}
-  // {'name.firstName': { $regex: new RegExp(query.email as string, $options: 'i') }}
-  // {presentAddress: { $regex: new RegExp(query.email as string, $options: 'i') }}
+  const queryObj = { ...query }; // copy the query object
+  let searchTerm = ''; // default search value
 
-  // ekhane amra sob gula hard codded likhte parbo na karon ekhane field different different hote pare. ei jonno etake dynamic korte hobe.
-  let searchTerm = '';
+  //* IF SEARCH TERM IS PRESENT
   if (query?.searchTerm) {
     searchTerm = query.searchTerm as string;
   }
-  const searchFields = [
-    'email',
-    'name.firstName',
-    'name.lastName',
-    'presentAddress',
-  ];
 
+  // HOW OUR FORMAT SHOULD BE FOR PARTIAL MATCH  :
+  //* { email: { $regex : query.searchTerm , $options: i}}
+  //* { presentAddress: { $regex : query.searchTerm , $options: i}}
+  //* { 'name.firstName': { $regex : query.searchTerm , $options: i}}
+
+  // WE ARE DYNAMICALLY DOING IT USING LOOP
   const searchQuery = Student.find({
-    $or: searchFields.map((key) => ({
-      [key]: { $regex: new RegExp(searchTerm, 'i') },
+    $or: studentSearchableFields.map((field) => ({
+      [field]: { $regex: searchTerm, $options: 'i' },
     })),
   });
 
-  const res = await searchQuery
-    .find()
+  //* Filtering functionality
+  const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
+  excludeFields.forEach((el) => delete queryObj[el]);
+
+  const filterQuery = searchQuery
+    .find(queryObj)
     .populate('admissionSemester')
     .populate({
       path: 'academicDepartment',
@@ -37,8 +40,53 @@ const getAllStudentFromDB = async (query: Record<string, unknown>) => {
       },
     });
 
-  return res;
+  // * Sorting functionality
+  let sort = '-createdAt'; // SET DEFAULT VALUE
+
+  // IF sort  IS GIVEN SET IT
+  if (query.sort) {
+    sort = query.sort as string;
+  }
+
+  const sortQuery = filterQuery.sort(sort);
+
+  // PAGINATION FUNCTIONALITY:
+  let page = 1; // SET DEFAULT VALUE FOR PAGE
+  let limit = 1; // SET DEFAULT VALUE FOR LIMIT
+  let skip = 0; // SET DEFAULT VALUE FOR SKIP
+
+  // IF limit IS GIVEN SET IT
+  if (query.limit) {
+    limit = Number(query.limit);
+  }
+
+  // IF page IS GIVEN SET IT
+
+  if (query.page) {
+    page = Number(query.page);
+    skip = (page - 1) * limit;
+  }
+
+  const paginateQuery = sortQuery.skip(skip);
+
+  const limitQuery = paginateQuery.limit(limit);
+
+  // FIELDS LIMITING FUNCTIONALITY:
+  // HOW OUR FORMAT SHOULD BE FOR PARTIAL MATCH
+  // fields: 'name,email'; // WE ARE ACCEPTING FROM REQUEST
+  // fields: 'name email'; // HOW IT SHOULD BE
+
+  let fields = '-__v'; // SET DEFAULT VALUE
+
+  if (query.fields) {
+    fields = (query.fields as string).split(',').join(' ');
+  }
+
+  const fieldQuery = await limitQuery.select(fields);
+
+  return fieldQuery;
 };
+
 const getSingleStudentFromDB = async (id: string) => {
   const res = await Student.findOne({ id })
     .populate('admissionSemester')
