@@ -3,9 +3,11 @@ import { Student } from './student.model';
 import AppError from '../../errors/AppError';
 import { User } from '../user/user.model';
 import { TStudent } from './student.interface';
+import QueryBuilder from '../../builder/QueryBuilder';
 import { studentSearchableFields } from './student.constant';
 
 const getAllStudentFromDB = async (query: Record<string, unknown>) => {
+  /*
   const queryObj = { ...query }; // copy the query object
   let searchTerm = ''; // default search value
 
@@ -85,6 +87,18 @@ const getAllStudentFromDB = async (query: Record<string, unknown>) => {
   const fieldQuery = await limitQuery.select(fields);
 
   return fieldQuery;
+*/
+  // USING BUILDER PATTERN
+  const studentQuery = new QueryBuilder(Student.find(), query)
+    .search(studentSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const res = await studentQuery.modelQuery;
+
+  return res;
 };
 
 const getSingleStudentFromDB = async (id: string) => {
