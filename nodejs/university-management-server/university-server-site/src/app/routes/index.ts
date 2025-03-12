@@ -9,7 +9,7 @@ import { AdminRoutes } from '../modules/admin/admin.route';
 import { CourseRoutes } from '../modules/course/course.route';
 const router = express.Router();
 
-// Define routes
+//* Define routes
 const moduleRoutes = [
   {
     path: '/users',
