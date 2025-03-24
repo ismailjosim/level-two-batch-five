@@ -1,5 +1,27 @@
-Topics
-Error Handling
-Searching
-Filtering
-Pagination
+Module 15
+
+➡️ Course & PreRequisites
+➡️ Dynamically Update Course & PreRequisites
+➡️ Set Relations between Faculty & Course
+➡️ Semester Registration
+➡️ Business Logic Validation
+
+🚀 findOne VS findById
+👉 normally we get this method to do Mongoose CRUD Operations
+Model.create()
+Model.findOne()
+Model.findById()
+Model.findOneAndUpdate()
+Model.findByIdAndUpdate()
+Model.findOneAndDelete()
+Model.findByIdAndDelete()
+
+Question => when should we use findOne() and findById()?
+👉 findOne() is used when we want to find a document based on some condition other than Mongodb default _id
+👉 findById() is used when we want to find a document based on the _id field
+
+Question => when should we use findOneAndUpdate() and findByIdAndUpdate()?
+👉 findOneAndUpdate() is used when we want to update a document based on some condition other than Mongodb default _id.
+👉 findByIdAndUpdate() is used when we want to update a document based on the _id field
+
+Note => but we can use _id field in findOneAndUpdate() as well, but it is not recommended to use it because it is not the best practice to use _id field in findOneAndUpdate() method.

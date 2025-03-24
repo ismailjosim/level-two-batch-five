@@ -102,7 +102,7 @@ const getAllStudentFromDB = async (query: Record<string, unknown>) => {
 };
 
 const getSingleStudentFromDB = async (id: string) => {
-  const res = await Student.findOne({ id })
+  const res = await Student.findById(id)
     .populate('admissionSemester')
     .populate({
       path: 'academicDepartment',
@@ -129,8 +129,8 @@ const deleteSingleStudentFromDB = async (id: string) => {
       throw new AppError(404, 'Student not found');
     }
 
-    const deleteStudentRes = await Student.findOneAndUpdate(
-      { id },
+    const deleteStudentRes = await Student.findByIdAndUpdate(
+      id,
       { isDeleted: true },
       { new: true, session },
     );
@@ -138,9 +138,12 @@ const deleteSingleStudentFromDB = async (id: string) => {
       throw new AppError(404, 'Failed To delete student');
     }
 
+    // get user_id from deleteStudentRes
+    const userId = deleteStudentRes.user;
+
     // second transaction
-    const deleteUserRes = await User.findOneAndUpdate(
-      { id },
+    const deleteUserRes = await User.findByIdAndUpdate(
+      userId,
       { isDeleted: true },
       { new: true, session },
     );
@@ -182,7 +185,7 @@ const updateStudentIntoDB = async (id: string, payload: Partial<TStudent>) => {
     }
   }
 
-  const result = await Student.findOneAndUpdate({ id }, modifiedUpdatedData, {
+  const result = await Student.findByIdAndUpdate(id, modifiedUpdatedData, {
     new: true,
     runValidators: true,
   });
