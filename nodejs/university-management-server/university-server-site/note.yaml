@@ -1,27 +1,44 @@
-Module 15
+Topics
+Error Handling
+Searching
+Filtering
+Pagination
 
-➡️ Course & PreRequisites
-➡️ Dynamically Update Course & PreRequisites
-➡️ Set Relations between Faculty & Course
-➡️ Semester Registration
-➡️ Business Logic Validation
+update in muli state:
+ekta holo only ekta field er update.
+2nd holo ek er odik field er update.
+3rd holo kono ekta array of obj er mode ek or mltiple filed er update/remove.
 
-🚀 findOne VS findById
-👉 normally we get this method to do Mongoose CRUD Operations
-Model.create()
-Model.findOne()
-Model.findById()
-Model.findOneAndUpdate()
-Model.findByIdAndUpdate()
-Model.findOneAndDelete()
-Model.findByIdAndDelete()
+for example:
+{
+    title: "Hyper Text Markup Language",
+    prefix: "HTML",
+    code: 101,
+    credits: 3,
+    preRequisiteCourses: [
+        {
+            course: "67f49d0ae482070463442d7e"
+        }
+    ]
+ }
 
-Question => when should we use findOne() and findById()?
-👉 findOne() is used when we want to find a document based on some condition other than Mongodb default _id
-👉 findById() is used when we want to find a document based on the _id field
+ekhane title, prefix, code, credits egula single field er update. but preRequisiteCourses holo ekta array of object er update. ekhane ek er odik filed update hote pare or delete o hote pare.
 
-Question => when should we use findOneAndUpdate() and findByIdAndUpdate()?
-👉 findOneAndUpdate() is used when we want to update a document based on some condition other than Mongodb default _id.
-👉 findByIdAndUpdate() is used when we want to update a document based on the _id field
+to er jonno amader ke basic filed gula ke alada korte hobe. ar preRequisiteCourses alada korte hobe.
+to ekhon amra frontend theke kivabe bujbo je preRequisiteCourses er moddhe ki ki update hobe. er jonno ekhane ekta field ase jeta holo isDeleted. for example:
+{
+    course: "67f49d0ae482070463442d7e",
+    isDeleted: true
+}
+ekhane jodi isDeleted true hoy tahole amra bujhte parbo je ei course ta delete hobe. ar jodi isDeleted false hoy tahole amra bujhte parbo je ei course ta update hobe. ar jodi isDeleted na thake tahole amra bujhte parbo je ei course ta new add hobe.
 
-Note => but we can use _id field in findOneAndUpdate() as well, but it is not recommended to use it because it is not the best practice to use _id field in findOneAndUpdate() method.
+# inside course.service.js file
+const updatedBasicCourseInfo = await Course.findByIdAndUpdate(
+    id,
+    courseRemainingData,
+    {
+    new: true,
+    runValidators: true,
+  });
+return updatedBasicCourseInfo;
+

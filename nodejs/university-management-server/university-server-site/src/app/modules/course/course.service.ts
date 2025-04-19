@@ -27,6 +27,7 @@ const getAllCoursesFromDB = async (query: Record<string, unknown>) => {
     .fields();
 
   const result = await courseQuery.modelQuery;
+
   return result;
 };
 
