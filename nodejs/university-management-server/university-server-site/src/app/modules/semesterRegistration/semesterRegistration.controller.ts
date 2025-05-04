@@ -26,6 +26,7 @@ const getAllSemesterRegistrations = catchAsync(
       await SemesterRegistrationServices.getAllSemesterRegistrationsFromDB(
         req.query,
       );
+
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,

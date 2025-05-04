@@ -75,6 +75,7 @@ const getAllSemesterRegistrationsFromDB = async (
     .paginate()
     .fields();
   const result = await semesterRegistrationQuery.modelQuery;
+
   return result;
 };
 const getSingleSemesterRegistrationsFromDB = async (id: string) => {
