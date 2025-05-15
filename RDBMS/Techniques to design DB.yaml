@@ -1,0 +1,58 @@
+DB design:
+
+SDLC
+  - Requirements Analysis
+  - Design
+    - Logical Design
+      - Conceptual Design
+      - Physical Design
+    - Implementation
+  - Testing
+  - Deployment
+  - Maintenance
+
+ - Planning
+ - Analysis
+ - system design [very very important]
+ - Building
+ - Testing
+ - Deployment
+
+Purpose of DB design:
+  - To create a blueprint for the database that meets the requirements of the application.
+  - To ensure that the database is efficient, scalable, and maintainable.
+  - To establish relationships between tables and enforce data integrity.
+  - To optimize performance and minimize redundancy.
+  - To ensure that the database can be easily modified and extended in the future.
+
+Techniques to design DB:
+1. Top-down approach
+2. Bottom-up approach
+
+Top-down approach:
+  - Start with a high-level view of the system and break it down into smaller components.
+  - Identify the main entities and their relationships.
+  - Create an Entity-Relationship (ER) diagram to visualize the structure of the database.
+  - Define the attributes for each entity and establish primary and foreign keys.
+  - Normalize the database to eliminate redundancy and ensure data integrity.
+  - Create a physical schema based on the logical design.
+
+Bottom-up approach:
+  - we already have a set of data and we want to create a database to store it.
+  - Identify the data elements and their relationships.
+  - Create an Entity-Relationship (ER) diagram to visualize the structure of the database.
+  - Define the attributes for each entity and establish primary and foreign keys.
+  - Normalize the database to eliminate redundancy and ensure data integrity.
+  - Create a physical schema based on the logical design.
+
+comments: in real work we use both approaches.
+  - we start with a high-level view of the system and break it down into smaller components.
+  - we identify the main entities and their relationships.
+  - we create an Entity-Relationship (ER) diagram to visualize the structure of the database.
+  - we define the attributes for each entity and establish primary and foreign keys.
+  - we normalize the database to eliminate redundancy and ensure data integrity.
+  - we create a physical schema based on the logical design.
+
+Ideas:
+EduHub is a website that provides online courses and tutorials for students and professionals. The website has a database that stores information about courses, instructors, students, and enrollments. The database is designed to be efficient, scalable, and maintainable.
+The database is designed using a top-down approach, starting with a high-level view of the system and breaking it down into smaller components. The main entities identified are courses, instructors, students, and enrollments. An Entity-Relationship (ER) diagram is created to visualize the structure of the database, showing the relationships between the entities.

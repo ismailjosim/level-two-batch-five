@@ -1,0 +1,75 @@
+A key in a relational DB is a field or a combination of fields that uniquely identifies a record in a table.
+types of keys:-
+1. Super key
+2. Candidate Key
+3. Alternate key
+4. Composite Key
+5. Foreign Key
+6. Primary Key
+
+🚀 Super Key
+A super key is a set of one or more attributes that, when taken collectively, can uniquely identify a record in a table. A super key may contain additional attributes that are not necessary for unique identification.
+For example, in a table of employees, the combination of employee ID and employee name could be a super key, even though employee ID alone is sufficient to uniquely identify each employee.
+⭐ attributes or set of attributes by which we can identify each row uniquely.
+⭐ Could be a single attributes or a set of attributes.
+⭐ Could have null values in the set.
+⭐ It actually a superset.
+
+🚀 Candidate Key
+Candidate keys are a subset of super keys. A candidate key is a minimal super key, meaning that it contains no unnecessary attributes. In other words, if any attribute is removed from a candidate key, it will no longer be able to uniquely identify a record.
+For example, in a table of employees, if employee ID is sufficient to uniquely identify each employee, then employee ID is a candidate key. If we have another attribute, such as employee email, that can also uniquely identify each employee, then both employee ID and employee email are candidate keys.
+
+⭐ Super key whose proper subset is not a super key.
+⭐ It is a minimal super key.
+⭐ It is a subset of super key.
+⭐ It cannot have null values.
+⭐ Potential Primary key:- From the candidate keys, one key is selected as the primary key. However, all candidate keys are potential primary keys.
+
+🚀 Alternate key
+Alternate keys are candidate keys that are not selected as the primary key. They can still uniquely identify records in the table but are not used as the main identifier.
+For example, if employee ID is chosen as the primary key in a table of employees, then employee email could be considered an alternate key.
+
+⭐ Candidate key which is not selected as primary key.
+⭐ It is a subset of candidate key.
+⭐ It cannot have null values.
+⭐ It is used to enforce uniqueness in the table.
+
+🚀 Composite Key
+A composite key is a key that consists of two or more attributes that together uniquely identify a record in a table. Composite keys are often used when no single attribute can uniquely identify a record.
+For example, in a table of student enrollments, a combination of student ID and course ID could be used as a composite key to uniquely identify each enrollment record.
+
+⭐ A key that consists of two or more attributes.
+⭐ It is a subset of super key.
+⭐ It is a subset of candidate key.
+⭐ It is a subset of primary key.
+⭐ It is a subset of alternate key.
+⭐ It cannot have null values.
+
+🚀 Foreign Key
+A foreign key is an attribute or a set of attributes in one table that refers to the primary key in another table. Foreign keys are used to establish relationships between tables and enforce referential integrity.
+For example, in a table of orders, the customer ID could be a foreign key that refers to the primary key in a table of customers. This establishes a relationship between the orders and customers tables.
+
+⭐ A key that refers to the primary key of another table.
+⭐ It is a subset of super key.
+⭐ It is a subset of candidate key.
+⭐ It is a subset of primary key.
+⭐ It is a subset of alternate key.
+⭐ It can have null values.
+⭐ It is used to establish relationships between tables.
+
+🚀 Primary Key
+A primary key is a special type of candidate key that is chosen to uniquely identify records in a table. A primary key must contain unique values and cannot contain null values. Each table can have only one primary key, which may consist of one or more attributes.
+For example, in a table of employees, the employee ID could be chosen as the primary key, ensuring that each employee has a unique identifier.
+
+⭐ A key that uniquely identifies each record in a table.
+⭐ It is a subset of super key.
+⭐ It is a subset of candidate key.
+⭐ It is a subset of alternate key.
+⭐ It is a subset of composite key.
+⭐ It is a subset of foreign key.
+⭐ It cannot have null values.
+⭐ It is used to enforce entity integrity in the table.
+⭐ It is used to establish relationships between tables.
+⭐ It is used to enforce uniqueness in the table.
+⭐ It is used to enforce referential integrity in the table.
+

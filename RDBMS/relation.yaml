@@ -1,0 +1,5 @@
+column/attributes: table er each column ke column or attributes bola hoy.
+Constraint/Domain: each column e jodi only one type er data insert korar permission tai e holo Constraint. for example amra email column e only email type er data e insert korte parbo.
+Rows/Tuples/Records: amra column defined korar pore oi column er jonno jokhon exact data insert/input kora suru korbo tokhon oi each data tai holo row. etake relation model e Records or tuples of bola hoy.
+Degree: collection of column ke Degree bola hoy.
+Cardinality: collection of row ke Cardinality bola hoy.
