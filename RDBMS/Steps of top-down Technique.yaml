@@ -1,0 +1,83 @@
+Entity Relationship Diagram (ERD):
+an ERD is a visual representation of the database structure, showing the entities, their attributes, and the relationships between them. The ERD for EduHub includes the following entities:
+
+Step-01: Identify the main entities and their relationships
+  - Students Enrolling in Courses:
+    - Students can enroll in multiple courses.
+    - Each enrollments represents a student's participation in a specific course.
+
+  - Courses Available for Enrollment:
+    - courses are available for students to enroll in.
+    - Each course can have multiple students enrolled.
+
+  - Instructors Taking Course:
+    - Instructors can teach multiple courses.
+    - Each course can have one or more instructors.
+
+  - Courses
+    - CourseID (Primary Key)
+    - CourseName
+    - Description
+    - Duration
+    - Price
+  - Instructors
+    - InstructorID (Primary Key)
+    - FirstName
+    - LastName
+    - Email
+  - Students
+    - StudentID (Primary Key)
+    - FirstName
+    - LastName
+    - Email
+  - Enrollments
+    - EnrollmentID (Primary Key)
+    - CourseID (Foreign Key)
+    - StudentID (Foreign Key)
+
+* Place, Person, or Thing
+* Properties or Attributes
+* unique identifier
+* singular name
+* should more then one instance of data.
+
+
+step-02: Define the attributes for each entity
+  - Students:
+    - StudentID (Primary Key)
+    - FirstName
+    - LastName
+    - Email
+    - age
+
+  - Courses:
+    - CourseID (Primary Key)
+    - CourseName
+    - Description
+    - Duration
+    - Price
+    - InstructorID (Foreign Key)
+
+  - Instructors:
+    - InstructorID (Primary Key)
+    - FirstName
+    - LastName
+    - Email
+
+  - Enrollments:
+    - EnrollmentID (Primary Key)
+    - CourseID (Foreign Key)
+    - StudentID (Foreign Key)
+
+step-03: Define the relationships between entities
+  - Students and Courses:
+    - Many-to-Many relationship through the Enrollments entity.
+    - A student can enroll in multiple courses, and a course can have multiple students.
+
+  - Instructors and Courses:
+    - One-to-Many relationship.
+    - An instructor can teach multiple courses, but each course is taught by one or more instructors.
+
+* Should be related to the entity
+* should be atomic
+* should have keys
