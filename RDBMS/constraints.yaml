@@ -1,0 +1,54 @@
+# Constraints means in postgresql, the constraints are the rules that the data must follow.
+# This file defines the constraints for the database schema.
+# We need to make that constraints which will applied to the database schema.
+
+# types of constraints
+NOT NULL: The column must have a value, it cannot be null.
+  CREATE TABLE example (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL
+  )
+
+UNIQUE: The column must have a unique value, it cannot be duplicated.
+  CREATE TABLE example (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(100) UNIQUE
+  )
+PRIMARY KEY: A combination of NOT NULL and UNIQUE, it uniquely identifies each row in the table.
+  CREATE TABLE example (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(50) UNIQUE NOT NULL
+  )
+
+FOREIGN KEY: A column that creates a link between two tables, ensuring referential integrity.
+  CREATE TABLE example (
+ order_id SERIAL PRIMARY KEY,
+  customer_id INT REFERENCES customers(customer_id) ON DELETE CASCADE,
+  )
+
+DEFAULT: A default value for a column if no value is provided.
+  CREATE TABLE example (
+  id SERIAL PRIMARY KEY,
+  status VARCHAR(20) DEFAULT 'active'
+  )
+
+CHECK: The column must satisfy a specific condition.
+  CREATE TABLE example (
+  id SERIAL PRIMARY KEY,
+  age INT CHECK (age >= 18)
+  )
+
+EXCLUDE: A constraint that prevents overlapping ranges in a column.
+  CREATE TABLE example (
+  id SERIAL PRIMARY KEY,
+  period TSRANGE EXCLUDE USING GIST (period WITH &&)
+  )
+
+# FULL EXAMPLE OF TABLE PERSON WITH CONSTRAINTS:
+CREATE TABLE person (
+  id SERIAL PRIMARY KEY,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  email VARCHAR(100) UNIQUE NOT NULL,
+  age INT CHECK (age >= 0)
+);

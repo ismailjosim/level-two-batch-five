@@ -1,0 +1,36 @@
+# What is SQL?
+# SQL (Structured Query Language) is a standard programming language specifically designed for managing and manipulating relational databases. It is used to perform various operations on the data stored in these databases, such as querying, updating, inserting, and deleting records. SQL provides a way to interact with the database using a set of commands and syntax that allows users to retrieve and manipulate data efficiently.
+
+# What is Query?
+# A query is a request for information or data from a database. In SQL, queries are written using the SELECT statement, which allows users to specify the data they want to retrieve from one or more tables. Queries can also include conditions, filters, and sorting options to refine the results. For example, a simple SQL query might look like this:
+# SELECT * FROM employees WHERE department = 'Sales';
+
+# This query retrieves all records from the "employees" table where the department is 'Sales'. Queries can be simple or complex, depending on the requirements and the structure of the database.
+
+# SQL is a declarative language, meaning that users specify what they want to retrieve or manipulate without having to describe how to do it. The database management system (DBMS) takes care of the underlying operations to fulfill the request.
+
+# SQL Commands:
+# SQL commands are divided into several categories based on their functionality. The main categories include:
+# 1. Data Query Language (DQL): Used to query and retrieve data from the database.
+#    - SELECT: Retrieves data from one or more tables.
+
+# 2. Data Definition Language (DDL): Used to define and manage the structure of the database.
+#    - CREATE: Creates a new table or database.
+#    - ALTER: Modifies the structure of an existing table.
+#    - DROP: Deletes a table or database.
+#    - TRUNCATE: Removes all records from a table without deleting the table itself.
+
+# 3. Data Manipulation Language (DML): Used to manipulate and modify data within the database.
+#    - INSERT: Adds new records to a table.
+#    - UPDATE: Modifies existing records in a table.
+#    - DELETE: Removes records from a table.
+
+# 4. Data Control Language (DCL): Used to control access to the data in the database.
+#    - GRANT: Gives users access privileges to the database.
+#    - REVOKE: Removes access privileges from users.
+
+# 5. Transaction Control Language (TCL): Used to manage transactions in the database.
+#    - COMMIT: Saves changes made during a transaction.
+#    - ROLLBACK: Undoes changes made during a transaction.
+#    - SAVEPOINT: Sets a point within a transaction to which you can later roll back.
+

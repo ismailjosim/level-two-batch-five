@@ -1,0 +1,51 @@
+# If we want to see Schema in Postgres just run the following command:
+\dn
+
+Schema is kind of module where we can group our tables, views, functions, etc. in a logical way.
+
+
+# User management in PostgreSQL
+# to check DB user:
+\du
+# to check DB roles:
+
+# user kono ekta db te update/delete/insert korte parbe kina egula ke bola hoi ek ek ta privilege. ar keykta privilege milei hoi ek ekta attribute. For example: ami read, write, update, delete ei koykta privilege diye ekta attribute create korlam.
+
+Superuser, Create role, Create DB, Replication, Bypass RLS
+# Superuser: superuser role er shathe shob kichu korte parbe.
+# Create role: onno user create korte parbe.
+# Create DB: onno database create korte parbe.
+# Replication: replication er jonno use hoy.
+# Bypass RLS: row level security bypass korte parbe.
+# to check DB privileges:
+\dp
+# to check DB roles:
+\du
+
+# amra always superuser role er shathe kaj kori na. amra ekta role create kori, tarpor oi role ke superuser role er shathe associate kori. ar oi role ke amra user er shathe associate kori. jate oi user ta superuser role er shathe kaj korte pare.
+
+# to create a new User:
+CREATE USER <username> WITH PASSWORD '<password>'; // eta lowercase or uppercase hote pare.
+CREATE USER ismail WITH LOGIN ENCRYPTED PASSWORD '476245';
+
+# to create a new Role:
+CREATE ROLE <rolename> WITH LOGIN ENCRYPTED PASSWORD '<password>'; // eta lowercase or uppercase hote pare.
+
+
+josim=> create table test_table (name varchar(50));
+CREATE TABLE
+josim=> \d
+          List of relations
+ Schema |    Name    | Type  | Owner
+--------+------------+-------+-------
+ public | test_table | table | josim
+(1 row)
+
+
+josim=> insert into test_table(name) values('ismail');
+
+select * from test_table;
+  name
+--------
+ ismail
+(1 row)

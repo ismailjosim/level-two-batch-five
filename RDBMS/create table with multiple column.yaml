@@ -1,0 +1,16 @@
+-- CREATE  DATABASE ph;
+-- create a table
+-- CREATE  TABLE person (
+--     person_id SERIAL,
+--     first_name VARCHAR(50),
+--     last_name VARCHAR(50),
+--     age INTEGER,
+--     is_active BOOLEAN,
+--     dob DATE
+-- )
+
+-- rename table name
+-- alter TABLE users RENAME to "user";
+
+-- Drop a table
+-- drop TABLE "user";

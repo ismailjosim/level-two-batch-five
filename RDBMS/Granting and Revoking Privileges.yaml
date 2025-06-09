@@ -1,0 +1,47 @@
+# by default user don't have any privileges
+# Granting and Revoking Privileges we can use GRANT and REVOKE commands
+# GRANT command is used to give privileges to users
+# REVOKE command is used to take back privileges from users
+# GRANT command syntax
+# GRANT privilege_type ON object_type object_name TO user_name; for example:
+grant all privileges on table test_table to josim;
+
+# REVOKE command syntax
+REVOKE privilege_type ON object_type object_name FROM user_name;
+
+# To insert or add data we need to first connect to the database:
+\c josim
+josim=# \d
+          List of relations
+ Schema |    Name    | Type  | Owner
+--------+------------+-------+-------
+ public | test_table | table | josim
+(1 row)
+
+
+josim=# insert into test_table(name) values('ismail');
+INSERT 0 1
+
+
+grant all privileges on table test_table to user1;
+# now we can connect to the database with user1
+# and insert data into the table
+# user1 can insert data into the table
+# but user1 can't drop the table
+# user1 can't drop the table
+
+# remove all privileges from user;
+revoke all privileges on table test_table from user1;
+
+# similar to that we can create roles and grant privileges to roles
+# and then we can assign roles to users
+
+create role role1;
+
+# now we can grant privileges to role1
+grant select on all tables in schema public to role1;
+
+GRANT;
+
+# now we can assign role1 to user1
+grant role1 to user1;

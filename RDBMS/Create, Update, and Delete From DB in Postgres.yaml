@@ -1,0 +1,31 @@
+# To Create a database:
+create database database_name;
+
+# To drop a database:
+drop database database_name;
+
+# To create a table:
+create table table_name (
+    column1_name data_type [constraints],
+    column2_name data_type [constraints],
+);
+
+
+Data Types:
+# Data Consistency:
+# Convenience and Functionality:
+# Performance:
+# Storage Efficiency:
+# Constraint Enforcement:
+
+# common used Data types in Postgres:
+# Boolean: true, false, null
+# Numeric: integer(INT, BIGINT, SMALLINT, FLOAT4, FLOAT8, NUMERIC, serial)
+# Numbers
+# Binary
+# Date/Time: 20-Dec-2023, 1980-=12-20, Dec-20-1980
+# JSON
+# Character: Char, Varchar, Text
+# UUID: Universally Unique Identifier
+# Array
+# XML.
